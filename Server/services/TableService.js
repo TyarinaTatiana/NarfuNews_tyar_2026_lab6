@@ -1,96 +1,80 @@
+// Загружаем переменные из файла .env в process.env
 require('dotenv').config();
 
+//Подключаем библиотеку axios для HTTP-запросов
 const axios = require('axios');
 
+//Создаем класс
 class TablesService {
+    //
     constructor(tableId) {
-        this.tableId=tableId;
-        this.apiKey = process.env.TOKEN;
-        this.baseURL = process.env.TABLES_API_URL;
+        this.tableId=tableId; // ID таблицы, с которой работаем. Пердаем из контроллера
+        this.apiKey = process.env.TOKEN; // Берём токен из переменных окружения
+        this.baseURL = process.env.TABLES_API_URL; // Базовый URL API
 
+        // Создаём настроенный экземпляр axios что бы не прописывать постоянно токен
         this.client = axios.create({
-            baseURL: this.baseURL,
+            baseURL: this.baseURL,  // Базовый URL для всех запросов КОНТРОЛЛЕРА
             headers: {
-                'Authorization': `Bearer ${this.apiKey}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${this.apiKey}`, // Токен авторизации
+                'Content-Type': 'application/json' // Тип данных
             }
         });
     }
 
     // Получить все записи
-    async getAllRecords() {
+    async _get(url) {
         try {
-            const response = await this.client.get(`/${this.tableId}/records`);
+            // выполняем запрос
+            const response = await this.client.get(`/${this.tableId}/records${url}`);
+            // Возвращаем только данные
             return response.data;
         } catch (error) {
+            //обработка ошибок
             console.error('Ошибка при получении записей:', error.response?.data || error.message);
             throw error;
         }
     }
     
-    async getRecordsWithQuery(query) {
-        try {
-            const response = await this.client.get(`/${this.tableId}/records?${query}`);
-            return response.data;
-        } catch (error) {
-            console.error('Ошибка при получении записей:', error.response?.data || error.message);
-            throw error;
-        }
-    }
-
-    // Получить запись по ID
-    async getRecordById(recordId) {
-        try {
-            const response = await this.client.get(`/tables/${this.tableId}/rows/${recordId}`);
-            return response.data;
-        } catch (error) {
-            console.error('Ошибка при получении записи:', error.response?.data || error.message);
-            throw error;
-        }
-    }
-
+    
     // Создать новую запись
-    async createRecord(data) {
+    async _post(url, data) {
         try {
-            const response = await this.client.post(`/tables/${this.tableId}/rows`, data);
+            // выполняем запрос
+            const response = await this.client.post(`/${this.tableId}/records${url}`, data);
+            // Возвращаем только данные
             return response.data;
         } catch (error) {
+            //обработка ошибок
             console.error('Ошибка при создании записи:', error.response?.data || error.message);
             throw error;
         }
     }
 
     // Обновить запись
-    async updateRecord(recordId, data) {
+    async _put(url, data) {
         try {
-            const response = await this.client.put(`/tables/${this.tableId}/rows/${recordId}`, data);
+            // выполняем запрос
+            const response = await this.client.put(`/${this.tableId}/records/${url}`, data);
+            // Возвращаем только данные
             return response.data;
         } catch (error) {
+            //обработка ошибок
             console.error('Ошибка при обновлении записи:', error.response?.data || error.message);
             throw error;
         }
     }
 
     // Удалить запись
-    async deleteRecord(recordId) {
+    async _delete(url) {
         try {
-            const response = await this.client.delete(`/tables/${this.tableId}/rows/${recordId}`);
+            // выполняем запрос
+            const response = await this.client.delete(`/${this.tableId}/rows/${url}`);
+            // Возвращаем только данные
             return response.data;
         } catch (error) {
+            //обработка ошибок
             console.error('Ошибка при удалении записи:', error.response?.data || error.message);
-            throw error;
-        }
-    }
-
-    // Поиск с фильтрацией
-    async searchRecords(filters) {
-        try {
-            const response = await this.client.get(`/tables/${this.tableId}/rows`, {
-                params: filters
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Ошибка при поиске:', error.response?.data || error.message);
             throw error;
         }
     }

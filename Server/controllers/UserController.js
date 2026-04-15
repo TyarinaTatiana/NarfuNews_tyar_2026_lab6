@@ -1,8 +1,12 @@
+//Загружает переменные из .env
 require('dotenv').config();
+//Подключаем сервис для работы с таблицами
 const tableService = require('../services/TableService');
-tableService.tableId = 'dst1PfZaEHjrvzFkn6'
+//Подключаем express
 const express = require('express');
-const axios = require("axios");
+//присваиваем tableId ДЛЯ ЭТОГО контроллера
+tableService.tableId = process.env.USER_TABLE_ID;
+
 /*
  * работа с роутом (уникальным путем коннтроллера)
  * UserController: получение информации о пользователях
@@ -16,47 +20,12 @@ const router = express.Router();
 */
 router.get('/', (req, res) => {
     
-    tableService.getAllRecords()
+    tableService.client._get()
         .then(req=> req.data)
         .then(records=> res.json(records))
         
 });
 
-/*
-    description: Маршрут для поиска пользователя по логину и паролю
-    router: http://localhost:3010/api/users/login?login={login}&password={password}
-    type: get
-*/
-router.get('/login', (req, res) => {
-    const { login, password } = req.query;
-
-    // Проверка наличия обязательных полей
-    if (!login || !password) {
-        //Возврат ошибки, если хотя бы одно из полей не заполнено
-        return res.status(400).json({ message: 'Не заполнены обязательные поля' });
-    }
-});
-
-/*
-    description: Маршрут для получения информации о пользоыателе по его ID
-    router: http://localhost:3010/api/users/{userId}
-    type: get
-*/
-router.get('/:userId', (req, res) => {
-    const { userId } = req.params;
-});
-
-/*
-    description: Маршрут для создания нового пользователя
-    router: http://localhost:3010/api/users/
-    type: post
-    body: {
-        Login: string (required),
-        Password: string (required),
-        Name: string,
-        Email: string,
-        ...otherFields
-    }
-*/
 
 module.exports = router;
+
