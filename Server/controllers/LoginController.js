@@ -22,10 +22,12 @@ router.get('/auth', (req, res) => {
         //Возврат ошибки, если хотя бы одно из полей не заполнено
         return res.status(400).json({ message: 'Не заполнены обязательные поля' });
     }
-    
-    tableService._get(`?filterByFormula=AND({email}='${email}', {password}='${password}')`)
+    console.log(email, password);
+
+    tableService._get(`?filterByFormula=AND({Email}='${email}', {Password}='${password}')`)
         .then(req=> req.data)
         .then(records=> {
+            console.log(records);
             if(records.total == 0){
                 res.status(400).json({ message: 'Пользователь не найден' });
             } else
