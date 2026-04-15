@@ -5,8 +5,8 @@
       <main-side-bar
         :model-value="drawer"
         />
-            <v-btn icon="clear"/>
-      <v-icon icon="mdi-home"/>
+      <router-view class="px-0" style="width: 100%"/>
+
     </v-main>
   </v-app>
 </template>
@@ -22,3 +22,5 @@ watch(group, () => {
   drawer.value = false
 })
 </script>
+
+

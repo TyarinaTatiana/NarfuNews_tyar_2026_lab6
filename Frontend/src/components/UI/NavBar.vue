@@ -31,10 +31,13 @@
      </v-menu>
     </template>
   </v-app-bar>
+  <login-dialog/>
 </template>
 
 <script setup>
 import {computed, ref} from "vue";
+import LoginDialog from "@/src/components/dialogs/LoginDialog.vue";
+
 import NarfuNewsData from '@/../NarfuNewsData.json'
 
 const emit = defineEmits(['toggle-drawer'])
@@ -42,9 +45,9 @@ const isAuth = ref(false)
 
 const currentUser=computed(()=> {
 const currentUserData = NarfuNewsData.currentUser;
-const userName =currentUserData.secondName+' '+currentUserData.name[0]+'.';
-  return !!currentUserData.lastName&& currentUserData.lastName?.length > 0
-      ? userName+currentUserData.lastName[0]+'.'
+const userName =currentUserData?.secondName+' '+currentUserData?.name[0]+'.';
+  return !!currentUserData?.lastName&& currentUserData?.lastName?.length > 0
+      ? userName+currentUserData?.lastName[0]+'.'
       :userName;
 }, ()=>{})
 

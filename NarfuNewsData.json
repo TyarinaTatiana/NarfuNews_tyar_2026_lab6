@@ -1,7 +1,16 @@
 {
-  "currentUser": {
-    "secondName": "Иванов",
-    "name": "Иван",
-    "lastName": "Иванович"
-  }
+  "NewsArray": [
+    {
+      "newId": 1,
+      "newsTitle": "Заголовок новости",
+      "newsDescription": "Описание новости"
+    },
+    {
+      "newId": 2,
+      "newsTitle": "Заголовок новости",
+      "newsDescription": "Описание новости"
+    }
+  ]
 }
+
+
