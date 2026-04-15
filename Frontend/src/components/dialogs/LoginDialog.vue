@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-      v-model="visible"
+      v-model="localVisible"
       max-width="50%"
       persistent
   >
@@ -35,11 +35,11 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn variant="text" color="primary" text @click="visible = false">
+        <v-btn variant="text" color="primary" text @click="localVisible = false">
           Отмена
         </v-btn>
-        <v-btn  variant="flat" color="primary" text @click="submitClick">
-          {{selectedTab === tabsEnums.signIn ? 'Войти': 'Зарегистрироваться'}}
+        <v-btn variant="flat" color="primary" text @click="submitClick">
+          {{ selectedTab === tabsEnums.signIn ? 'Войти' : 'Зарегистрироваться' }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -47,9 +47,18 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
-const visible= ref(true)
+const emit = defineEmits(['update:visible']);
+
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false
+  }
+})
+
+
 const selectedTab = ref(0)
 const email = ref('')
 const password = ref('')
@@ -58,21 +67,30 @@ const tabsEnums = {
   signIn: 0,
   registration: 1,
 }
+const localVisible = computed({
+      get: () => {
+        return props.visible
+      },      // Получаем значение из props
+      set: (value) => {
+        emit('update:visible', value);
+      }
+    }
+);
 
+const submitClick = () => {
+  if (selectedTab.value === tabsEnums.signIn) return signIn();
 
-const submitClick=()=> {
-  if(selectedTab.value===tabsEnums.signIn) return signIn()
 }
 
-  
-const signIn =()=> {
-  if(email.value==='' || password.value==='' || !email.value || !password.value) {
+
+const signIn = () => {
+  if (email.value === '' || password.value === '' || !email.value || !password.value) {
     return alert('Не заполнены обязательные поля!')
   }
+
 }
 
 </script>
-
 
 
 <style scoped>

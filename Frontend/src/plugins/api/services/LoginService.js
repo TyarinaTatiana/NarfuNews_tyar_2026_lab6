@@ -12,7 +12,7 @@ class LoginService {
 }
 
 // Класс для работы с API пользователей
-const service = new UserRolesService(API_BASE_URL);
+const service = new LoginService(API_BASE_URL);
 
 // Экспортируем экземпляр
 export default service;

@@ -1,8 +1,8 @@
 //Получаем значение PORT из .env файла
 const port = import.meta.env.PORT || 3010;
+// Базовый URL вашего API
 export const API_BASE_URL = `http://localhost:${port}/api`;
 
-// Базовый URL вашего API
 
 /* Общая функция для выполнения запросов
 * Универсальная функция для выполнения HTTP запросов

@@ -16,14 +16,14 @@
       />
     </div>
     <template #append>
-      <v-btn v-if="!isAuth && !currentUser">
-        Войти 
+      <v-btn v-if="!isAuth && !currentUser" @click="()=>visibleLoginDialog =true">
+        Войти  {{visibleLoginDialog}}
       </v-btn>
      <v-menu v-else>
        <template v-slot:activator="{ on, attrs }">
          <v-btn
              color="white"
-             v-bind="props"
+             v-bind="attrs"
          >
            {{ currentUser }}
          </v-btn>
@@ -32,6 +32,7 @@
     </template>
   </v-app-bar>
   <login-dialog
+      v-model:visible="visibleLoginDialog"
   />
 </template>
 
@@ -40,17 +41,12 @@ import {computed, ref} from "vue";
 import LoginDialog from "@/src/components/dialogs/LoginDialog.vue";
 
 import NarfuNewsData from '@/../NarfuNewsData.json'
+const visibleLoginDialog = ref(false)
 
 const emit = defineEmits(['toggle-drawer'])
 const isAuth = ref(false)
 
-const currentUser=computed(()=> {
-const currentUserData = NarfuNewsData.currentUser;
-const userName =currentUserData?.secondName+' '+currentUserData?.name[0]+'.';
-  return !!currentUserData?.lastName&& currentUserData?.lastName?.length > 0
-      ? userName+currentUserData?.lastName[0]+'.'
-      :userName;
-}, ()=>{})
+const currentUser=ref(null)
 
 
 
