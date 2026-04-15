@@ -18,8 +18,8 @@
       <v-card-text>
         <div v-if="selectedTab===tabsEnums.signIn">
           <v-text-field
-              v-model="login"
-              placeholder="Логин"
+              v-model="email"
+              placeholder="Email"
               variant="outlined"
               density="compact"
               :rules="[v=> !!v || 'Обязательное поле']"
@@ -51,7 +51,7 @@ import {ref} from "vue";
 
 const visible= ref(true)
 const selectedTab = ref(0)
-const login = ref('')
+const email = ref('')
 const password = ref('')
 
 const tabsEnums = {
@@ -66,7 +66,7 @@ const submitClick=()=> {
 
   
 const signIn =()=> {
-  if(login.value==='' || password.value==='' || !login.value || !password.value) {
+  if(email.value==='' || password.value==='' || !email.value || !password.value) {
     return alert('Не заполнены обязательные поля!')
   }
 }

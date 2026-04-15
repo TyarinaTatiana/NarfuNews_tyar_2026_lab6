@@ -31,7 +31,8 @@
      </v-menu>
     </template>
   </v-app-bar>
-  <login-dialog/>
+  <login-dialog
+  />
 </template>
 
 <script setup>
