@@ -27,11 +27,10 @@ router.get('/auth', (req, res) => {
     tableService._get(`?filterByFormula=AND({Email}='${email}', {Password}='${password}')`)
         .then(req=> req.data)
         .then(records=> {
-            console.log(records);
             if(records.total == 0){
-                res.status(400).json({ message: 'Пользователь не найден' });
+                res.status(400).json({ message: 'Пользователь не найден',userId:0 });
             } else
-                res.status(200).json({ message: 'Успешная авторизация'});
+                res.status(200).json({ message: 'Успешная авторизация', userId: records.records[0].fields.UserId[0]});
         })
 });
 

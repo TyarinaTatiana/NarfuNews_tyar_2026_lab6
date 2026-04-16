@@ -50,7 +50,6 @@
 import {computed, inject, ref} from "vue";
 
 const emit = defineEmits(['update:visible']);
-const loginService = inject("loginService"); // Внедряем UserService
 
 const props = defineProps({
   visible: {
@@ -84,17 +83,19 @@ const submitClick = () => {
 }
 
 
+const loginService = inject("loginService"); // Внедряем loginService
 const signIn = () => {
   if (email.value === '' || password.value === '' || !email.value || !password.value) {
     return alert('Не заполнены обязательные поля!')
   }
-
   loginService.authorizationUser(email.value, password.value)
       .then((response) => {
+        console.log(response)
         console.log('Авторизация')
       })
-
 }
+
+
 
 </script>
 
