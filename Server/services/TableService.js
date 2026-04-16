@@ -7,8 +7,7 @@ const axios = require('axios');
 //Создаем класс
 class TablesService {
     //
-    constructor(tableId) {
-        this.tableId=tableId; // ID таблицы, с которой работаем. Пердаем из контроллера
+    constructor() {
         this.apiKey = process.env.TOKEN; // Берём токен из переменных окружения
         this.baseURL = process.env.TABLES_API_URL; // Базовый URL API
 
@@ -23,10 +22,10 @@ class TablesService {
     }
 
     // Получить все записи
-    async _get(url) {
+    async _get(tableId, url) {
         try {
             // выполняем запрос
-            const response = await this.client.get(`/${this.tableId}/records${url}`);
+            const response = await this.client.get(`/${tableId}/records${url}`);
             // Возвращаем только данные
             return response.data;
         } catch (error) {
@@ -38,10 +37,10 @@ class TablesService {
     
     
     // Создать новую запись
-    async _post(url, data) {
+    async _post(tableId, url, data) {
         try {
             // выполняем запрос
-            const response = await this.client.post(`/${this.tableId}/records${url}`, data);
+            const response = await this.client.post(`/${tableId}/records${url}`, data);
             // Возвращаем только данные
             return response.data;
         } catch (error) {
@@ -52,10 +51,10 @@ class TablesService {
     }
 
     // Обновить запись
-    async _put(url, data) {
+    async _put(tableId, url, data) {
         try {
             // выполняем запрос
-            const response = await this.client.put(`/${this.tableId}/records/${url}`, data);
+            const response = await this.client.put(`/${tableId}/records/${url}`, data);
             // Возвращаем только данные
             return response.data;
         } catch (error) {
@@ -66,10 +65,10 @@ class TablesService {
     }
 
     // Удалить запись
-    async _delete(url) {
+    async _delete(tableId, url) {
         try {
             // выполняем запрос
-            const response = await this.client.delete(`/${this.tableId}/rows/${url}`);
+            const response = await this.client.delete(`/${tableId}/rows/${url}`);
             // Возвращаем только данные
             return response.data;
         } catch (error) {
