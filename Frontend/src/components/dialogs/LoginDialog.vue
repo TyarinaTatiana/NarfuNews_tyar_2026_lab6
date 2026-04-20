@@ -48,6 +48,7 @@
 
 <script setup>
 import {computed, inject, ref} from "vue";
+import UsersService from "@/src/plugins/api/services/UsersService";
 
 const emit = defineEmits(['update:visible']);
 
@@ -84,6 +85,7 @@ const submitClick = () => {
 
 
 const loginService = inject("loginService"); // Внедряем loginService
+const usersService = inject("usersService"); // Внедряем UsersService
 const signIn = () => {
   if (email.value === '' || password.value === '' || !email.value || !password.value) {
     return alert('Не заполнены обязательные поля!')
@@ -92,9 +94,12 @@ const signIn = () => {
       .then((response) => {
         console.log(response)
         console.log('Авторизация')
+        usersService.getUserById(response.userId)
+            .then((response) => {
+          console.log(response)
+        })
       })
 }
-
 
 
 </script>

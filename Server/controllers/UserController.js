@@ -26,6 +26,16 @@ router.get('/', (req, res) => {
         
 });
 
+router.get('/:id', (req, res) => {
+    tableService._get(process.env.USER_TABLE_ID,`?recordIds[0]=${req.params.id}`)
+        .then(req=>req.data)
+        .then(records=> {
+            if(records.total <=0)
+                res.status(400).json({ message: 'Пользователь не найден',userId:0 });
+            else res.json(records.records[0].fields);
+        })
+});
+
 
 module.exports = router;
 
