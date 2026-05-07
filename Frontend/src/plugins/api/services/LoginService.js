@@ -9,6 +9,21 @@ class LoginService {
         return fetchData(`${API_BASE_URL}/login/auth?email=${email}&password=${password}`);
     }
     
+    async registerUser(user) {
+        return  fetchData(`${API_BASE_URL}/login/register`, {
+            method : "POST", 
+            body: JSON.stringify({
+                email:user.email, 
+                password: user.password, 
+                name: user.name, 
+                surname: user.surname, 
+                patronymic: user.patronymic,
+            })
+        }).then(res => res.recordId)
+            
+        
+    }
+    
 }
 
 // Класс для работы с API пользователей

@@ -3,8 +3,8 @@
     <nav-bar @toggle-drawer="changeDrawer"/>
     <v-main>
       <main-side-bar
-        :model-value="drawer"
-        />
+          :model-value="drawer"
+      />
       <router-view class="px-0" style="width: 100%"/>
 
     </v-main>
@@ -15,10 +15,20 @@ import NavBar from "@/src/components/UI/NavBar.vue";
 import {onBeforeMount, ref, watch} from 'vue'
 import MainSideBar from "@/src/components/UI/MainSideBar.vue";
 
+import { useUserStore } from '@/src/store/UserStore'
+const userStore = useUserStore()
+
 const drawer = ref(false)
 const group = ref(null)
-onBeforeMount(()=> {
+onBeforeMount(() => {
   drawer.value = !!localStorage.getItem("side-bar-is-open") ? localStorage.getItem("side-bar-is-open") === 'true' : false;
+  const getCurrentUserId = sessionStorage.getItem('currentUserId');
+  console.log(getCurrentUserId);
+  if(!!getCurrentUserId && getCurrentUserId?.length >= 0) {
+    
+    userStore.getCurrentUser(getCurrentUserId)
+  }
+
 })
 
 const changeDrawer = () => {

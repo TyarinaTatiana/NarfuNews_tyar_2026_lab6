@@ -17,17 +17,24 @@
     </div>
     <template #append>
       <v-btn v-if="!isAuth && !currentUser" @click="()=>visibleLoginDialog =true">
-        Войти  {{visibleLoginDialog}}
+        Войти 
       </v-btn>
      <v-menu v-else>
-       <template v-slot:activator="{ on, attrs }">
+       <template v-slot:activator="{ props }">
          <v-btn
              color="white"
-             v-bind="attrs"
+             v-bind="props"
          >
            {{ currentUser }}
          </v-btn>
        </template>
+       <v-list>
+         <v-list-item
+             @click="logout"
+         >
+           Выйти
+         </v-list-item>
+       </v-list>
      </v-menu>
     </template>
   </v-app-bar>
@@ -40,14 +47,27 @@
 import {computed, ref} from "vue";
 import LoginDialog from "@/src/components/dialogs/LoginDialog.vue";
 
-import NarfuNewsData from '@/../NarfuNewsData.json'
+import { useUserStore } from '@/src/store/UserStore'
+const userStore = useUserStore();
+
+
 const visibleLoginDialog = ref(false)
 
 const emit = defineEmits(['toggle-drawer'])
-const isAuth = ref(false)
+const isAuth = computed(()=> {
+  const getCurrentUserId = sessionStorage.getItem('currentUserId');
+  return !!getCurrentUserId && getCurrentUserId?.length >= 0
+})
 
-const currentUser=ref(null)
+const currentUser=computed(() => {
+  if(!userStore.currentUser || !userStore.currentUser.UserId) return null;
+  return userStore.currentUser.Surname + ' '+userStore.currentUser.Name[0]+'.'+ userStore.currentUser.Patronymic[0]+'.'
+})
 
+const logout=()=> {
+  sessionStorage.clear()
+  localStorage.clear()
+}
 
 
 </script>

@@ -79,7 +79,7 @@ router.post('/register', async (req, res) => {
              ]
          })
              .then(req=> req.data)
-             .then(records=> res.json({recordId: records.records[0].recordId,}))
+             .then(records=> res.json({recordId: userId,}))
      })
     
 

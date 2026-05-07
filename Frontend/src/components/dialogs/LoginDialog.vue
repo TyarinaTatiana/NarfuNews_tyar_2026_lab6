@@ -32,6 +32,41 @@
               density="compact"
               :rules="[v=> !!v || 'Обязательное поле']"
           />
+        </div><div v-if="selectedTab===tabsEnums.registration">
+        <v-text-field
+            v-model="surname"
+            placeholder="Фамилия"
+            variant="outlined"
+            density="compact"
+            :rules="[v=> !!v || 'Обязательное поле']"
+        />
+        <v-text-field
+            v-model="name"
+            placeholder="Имя"
+            variant="outlined"
+            density="compact"
+            :rules="[v=> !!v || 'Обязательное поле']"
+        /><v-text-field
+            v-model="patronymic"
+            placeholder="Отчество"
+            variant="outlined"
+            density="compact"
+        />
+          <v-text-field
+              v-model="email"
+              placeholder="Email"
+              variant="outlined"
+              density="compact"
+              :rules="[v=> !!v || 'Обязательное поле']"
+          />
+          <v-text-field
+              v-model="password"
+              type="password"
+              placeholder="Пароль"
+              variant="outlined"
+              density="compact"
+              :rules="[v=> !!v || 'Обязательное поле']"
+          />
         </div>
       </v-card-text>
       <v-card-actions>
@@ -48,7 +83,10 @@
 
 <script setup>
 import {computed, inject, ref} from "vue";
-import UsersService from "@/src/plugins/api/services/UsersService";
+
+import { useUserStore } from '@/src/store/UserStore'
+const userStore = useUserStore()
+
 
 const emit = defineEmits(['update:visible']);
 
@@ -63,6 +101,9 @@ const props = defineProps({
 const selectedTab = ref(0)
 const email = ref('')
 const password = ref('')
+const name = ref('')
+const surname = ref('')
+const patronymic = ref('')
 
 const tabsEnums = {
   signIn: 0,
@@ -79,8 +120,15 @@ const localVisible = computed({
 );
 
 const submitClick = () => {
+  console.log('bhkunjknhkjn', selectedTab)
   if (selectedTab.value === tabsEnums.signIn) return signIn();
-
+else userStore.registerUser({
+    email: email.value,
+    password: password.value,
+    name: name.value,
+    surname: surname.value,
+    patronymic: patronymic.value,
+  }).finally(()=> localVisible.value = false);
 }
 
 
@@ -90,15 +138,7 @@ const signIn = () => {
   if (email.value === '' || password.value === '' || !email.value || !password.value) {
     return alert('Не заполнены обязательные поля!')
   }
-  loginService.authorizationUser(email.value, password.value)
-      .then((response) => {
-        console.log(response)
-        console.log('Авторизация')
-        usersService.getUserById(response.userId)
-            .then((response) => {
-          console.log(response)
-        })
-      })
+  userStore.authorizeUser({ email: email.value, password: password.value })
 }
 
 
