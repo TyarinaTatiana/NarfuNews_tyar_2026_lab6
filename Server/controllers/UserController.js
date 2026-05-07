@@ -37,5 +37,23 @@ router.get('/:id', (req, res) => {
 });
 
 
+router.post('/create_user', async (req, res) => {
+    const {name, surname, patronymic} = req.body;
+    await tableService._post(process.env.USER_TABLE_ID, '', {
+        records: [{
+            fields: {
+                Name: name,
+                Surname: surname,
+                Patronymic: patronymic,
+            }
+        }
+        ]
+    })
+        .then(req => req.data)
+        .then(records => 
+            res.json({recordId: records.records[0].recordId,})
+        )
+})
+
 module.exports = router;
 

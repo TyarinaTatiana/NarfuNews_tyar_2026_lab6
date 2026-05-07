@@ -9,6 +9,9 @@ const LoginController = require('./controllers/LoginController');
 
 const app = express();
 const port = process.env.PORT || 3010;
+app.use(express.json()); // для application/json
+app.use(express.urlencoded({ extended: true })); // для form-data (x-www-form-urlencoded)
+
 app.use(cors());
 
 app.use(express.static('static'));
